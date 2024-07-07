@@ -38,7 +38,11 @@ const registerUser = asyncHandler(async (req, res) => {
 //@access Public
 const authUser = asyncHandler(async (req, res) => {
     const { userName, password } = req.body
-    const user = await User.findOne({ userName });
+    const user = await User.findOne({ where: { userName: userName } });
+    if (!user) {
+        res.status(400);
+        throw new Error('No User Exist with this User Name');
+    }
     const matchPassword = await bcrypt.compare(password, user.password);
     if (user && matchPassword) {
         const token = generateToken(user);

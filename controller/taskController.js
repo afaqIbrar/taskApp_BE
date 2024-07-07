@@ -10,7 +10,7 @@ const Task = db.Task;
 const registerTask = asyncHandler(async (req, res) => {
     const { title, description } = req.body;
     const user = req.user;
-    const checkTaskExist = await Task.findOne({ where: { title: title } });
+    const checkTaskExist = await Task.findOne({ where: { title: title, userId: user.id } });
     if (checkTaskExist) {
         res.status(400)
         throw new Error('Task Already exists with this Title');
