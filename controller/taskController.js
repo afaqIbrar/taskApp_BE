@@ -23,6 +23,7 @@ const registerTask = asyncHandler(async (req, res) => {
             id: task.id,
             title: task.title,
             status: task.status,
+            description: task.description,
         })
     } else {
         res.status(400)
@@ -35,7 +36,7 @@ const registerTask = asyncHandler(async (req, res) => {
 // @access Private
 const getTasks = asyncHandler(async (req, res) => {
     const user = req.user;
-    const tasks = await Task.findAll({ where: { userId: user.id } });
+    const tasks = await Task.findAll({ where: { userId: user.id }, order: [['createdAt', 'DESC']] });
 
     res.status(200).json(tasks);
 });
